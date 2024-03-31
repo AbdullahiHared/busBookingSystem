@@ -4,10 +4,18 @@ import java.time.Year;
 public class main {
     static Scanner mainScanner = new Scanner(System.in); // Declaring Scanner globally
 
-    static String[][] seats = {
+
+    static String[][] frontSeats = {
             {"0", "0", "0", "0"},
+            {"0", "0", "0", "0"}
+    };
+
+    static String[][] centralSeats = {
             {"0", "0", "0", "0"},
-            {"0", "0", "0", "0"},
+            {"0", "0", "0", "0"}
+    };
+
+    static String[][] backSeats = {
             {"0", "0", "0", "0"},
             {"0", "0", "0", "0"}
     };
@@ -46,7 +54,37 @@ public class main {
     }
 
     static void showBus() {
+        System.out.println("          _______");
+        System.out.println("   ___ /_____\\_____\\ ___");
 
+        System.out.println("  |       Front      |");
+        printSeats(frontSeats);
+        System.out.println("  |       Central    |");
+        printSeats(centralSeats);
+        System.out.println("  |       Back       |");
+        printSeats(backSeats);
+
+        System.out.println("  |_____________________|");
+    }
+
+    static void printSeats(String[][] seats) {
+        for (String[] row : seats) {
+            printRow(row);
+            printEmptyRow();
+        }
+    }
+
+    static void printRow(String[] row) {
+        System.out.println("  |                     |");
+        System.out.print("  |");
+        for (int seat = 0; seat < row.length; seat++) {
+            System.out.print(" " + 0 + " ");
+        }
+        System.out.println("|");
+    }
+
+    static void printEmptyRow() {
+        System.out.println("  |                     |");
     }
 
     static void bussInspector() {
