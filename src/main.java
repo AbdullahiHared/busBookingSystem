@@ -22,7 +22,8 @@ public class main {
 
     /**
      * Print the menu of role options for user selection.
-     *  @return `1` for Bus Inspector, `2` for Customer, '0' to Exit
+     *
+     * @return `1` for Bus Inspector, `2` for Customer, '0' to Exit
      */
 
     static int promptUserForRoleChoice() {
@@ -42,15 +43,34 @@ public class main {
     }
 
     static void startBusServie() {
-          showBus();
-          switch (promptUserForRoleChoice()) {
-              case 1 : bussInspector();
-              break;
-              case 2 : customerChoiceCenter();
-              break;
-              default:
-                  System.out.println("Thanks for using our service ");
-          }
+        showBus();
+        switch (promptUserForRoleChoice()) {
+            case 1:
+                bussInspector();
+                break;
+            case 2:
+                customerChoiceCenter();
+                break;
+            default:
+                System.out.println("Thanks for using our service ");
+        }
+    }
+
+    static int customerChoiceCenter() {
+        int customerChoice;
+        System.out.println("Welcome: Choose from the options below to continue.");
+        System.out.println("0. Show The Bus: \t 1. Book Seat: \t 2. Unbook Seat: ");
+        System.out.print(": ");
+        customerChoice = mainScanner.nextInt();
+
+        if (customerChoice == 0 || customerChoice == 1 || customerChoice == 2) {
+            return customerChoice;
+        } else {
+            System.out.println("Please enter a valid option from (0, 1, or 2).");
+            //recursive call for the user to try again.
+            return customerChoiceCenter();
+        }
+
     }
 
     static void showBus() {
@@ -91,11 +111,7 @@ public class main {
 
     }
 
-    static void customerChoiceCenter() {
-
-    }
-
     public static void main(String[] args) {
-       startBusServie();
+        startBusServie();
     }
 }
