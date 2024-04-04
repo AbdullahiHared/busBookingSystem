@@ -42,35 +42,18 @@ public class main {
         }
     }
 
-    static void startBusServie() {
+    static void startBusService() {
         showBus();
         switch (promptUserForRoleChoice()) {
             case 1:
                 bussInspector();
                 break;
             case 2:
-                customerChoiceCenter();
+                startCustomerService();
                 break;
             default:
                 System.out.println("Thanks for using our service ");
         }
-    }
-
-    static int customerChoiceCenter() {
-        int customerChoice;
-        System.out.println("Welcome: Choose from the options below to continue.");
-        System.out.println("0. Show The Bus: \t 1. Book Seat: \t 2. Unbook Seat: ");
-        System.out.print(": ");
-        customerChoice = mainScanner.nextInt();
-
-        if (customerChoice == 0 || customerChoice == 1 || customerChoice == 2) {
-            return customerChoice;
-        } else {
-            System.out.println("Please enter a valid option from (0, 1, or 2).");
-            //recursive call for the user to try again.
-            return customerChoiceCenter();
-        }
-
     }
 
     static void showBus() {
@@ -107,11 +90,52 @@ public class main {
         System.out.println("  |                     |");
     }
 
+    static int customerChoiceCenter() {
+        int customerChoice;
+        System.out.println("Welcome: Choose from the options below to continue.");
+        System.out.println("0. Exit 1. \t Show The Bus: \t 2. Book Seat: \t 3. Unbook Seat: ");
+        System.out.print(": ");
+        customerChoice = mainScanner.nextInt();
+
+        if (customerChoice == 0 || customerChoice == 1 || customerChoice == 2) {
+            return customerChoice;
+        } else {
+            System.out.println("Please enter a valid option from (0, 1, or 2).");
+            //recursive call for the user to try again.
+            return customerChoiceCenter();
+        }
+
+    }
+
+    static void startCustomerService() {
+        switch (customerChoiceCenter()) {
+            case 1:
+                showBus();
+                break;
+            case 2:
+                bookSeat();
+                break;
+            case 3:
+                unBookSeat();
+                break;
+            default:
+                System.out.println("Thanks for using our service ");
+        }
+    }
+
+    static void bookSeat() {
+        System.out.println("Booking logic coming soon. ");
+    }
+
+    static void unBookSeat() {
+        System.out.println("Un Booking logic coming soon. ");
+    }
+
     static void bussInspector() {
 
     }
 
     public static void main(String[] args) {
-        startBusServie();
+        startBusService();
     }
 }
