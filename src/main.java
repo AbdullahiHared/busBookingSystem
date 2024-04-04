@@ -4,7 +4,6 @@ import java.time.Year;
 public class main {
     static Scanner mainScanner = new Scanner(System.in); // Declaring Scanner globally
 
-
     static String[][] frontSeats = {
             {"0", "0", "0", "0"},
             {"0", "0", "0", "0"}
@@ -20,17 +19,29 @@ public class main {
             {"0", "0", "0", "0"}
     };
 
-    /**
-     * Print the menu of role options for user selection.
-     *
-     * @return `1` for Bus Inspector, `2` for Customer, '0' to Exit
-     */
+    public static void main(String[] args) {
+        startBusService();
+    }
+
+    static void startBusService() {
+        showBus();
+        switch (promptUserForRoleChoice()) {
+            case 1:
+                busInspector();
+                break;
+            case 2:
+                startCustomerService();
+                break;
+            default:
+                System.out.println("Thanks for using our service ");
+        }
+    }
 
     static int promptUserForRoleChoice() {
         int choice;
         while (true) {
             System.out.print("Choose from below:\t");
-            System.out.println("0.Exit: \t 1. Bus Inspector: \t 2. Passenger: ");
+            System.out.println("0. Exit\t 1. Bus Inspector\t 2. Passenger");
             System.out.print(": ");
             choice = mainScanner.nextInt();
 
@@ -39,20 +50,6 @@ public class main {
             } else {
                 System.out.println("Please enter a valid option from (0, 1, or 2).");
             }
-        }
-    }
-
-    static void startBusService() {
-        showBus();
-        switch (promptUserForRoleChoice()) {
-            case 1:
-                bussInspector();
-                break;
-            case 2:
-                startCustomerService();
-                break;
-            default:
-                System.out.println("Thanks for using our service ");
         }
     }
 
@@ -80,31 +77,14 @@ public class main {
     static void printRow(String[] row) {
         System.out.println("  |                     |");
         System.out.print("  |");
-        for (int seat = 0; seat < row.length; seat++) {
-            System.out.print(" " + 0 + " ");
+        for (String seat : row) {
+            System.out.print(" " + seat + " ");
         }
         System.out.println("|");
     }
 
     static void printEmptyRow() {
         System.out.println("  |                     |");
-    }
-
-    static int customerChoiceCenter() {
-        int customerChoice;
-        System.out.println("Welcome: Choose from the options below to continue.");
-        System.out.println("0. Exit 1. \t Show The Bus: \t 2. Book Seat: \t 3. Unbook Seat: ");
-        System.out.print(": ");
-        customerChoice = mainScanner.nextInt();
-
-        if (customerChoice == 0 || customerChoice == 1 || customerChoice == 2) {
-            return customerChoice;
-        } else {
-            System.out.println("Please enter a valid option from (0, 1, or 2).");
-            //recursive call for the user to try again.
-            return customerChoiceCenter();
-        }
-
     }
 
     static void startCustomerService() {
@@ -123,19 +103,64 @@ public class main {
         }
     }
 
+    static int customerChoiceCenter() {
+        int customerChoice;
+        System.out.println("Welcome: Choose from the options below to continue.");
+        System.out.println("0. Exit\t 1. Show The Bus\t 2. Book Seat\t 3. Unbook Seat");
+        System.out.print(": ");
+        customerChoice = mainScanner.nextInt();
+
+        if (customerChoice >= 0 && customerChoice <= 3) {
+            return customerChoice;
+        } else {
+            System.out.println("Please enter a valid option from (0, 1, 2, or 3).");
+            // Recursive call for the user to try again.
+            return customerChoiceCenter();
+        }
+    }
+
     static void bookSeat() {
-        System.out.println("Booking logic coming soon. ");
+        System.out.print("Enter row number (1 for first row, 2 for second row): ");
+        int row = mainScanner.nextInt() - 1; // Adjusting to array index
+        System.out.print("Enter seat number (1-4): ");
+        int seat = mainScanner.nextInt() - 1; // Adjusting to array index
+
+        if (isValidSeat(row, seat)) {
+            if (isSeatAvailable(row, seat)) {
+                System.out.println("Seat booked successfully!");
+                markSeatAsBooked(row, seat);
+            } else {
+                System.out.println("This seat is already booked. Please choose another seat.");
+            }
+        } else {
+            System.out.println("Invalid seat number. Please enter a valid row and seat number.");
+        }
+    }
+
+    static boolean isValidSeat(int row, int seat) {
+        return row >= 0 && row < frontSeats.length && seat >= 0 && seat < frontSeats[0].length;
+    }
+
+    static boolean isSeatAvailable(int row, int seat) {
+        return frontSeats[row][seat].equals("0") && centralSeats[row][seat].equals("0") && backSeats[row][seat].equals("0");
+    }
+
+    static void markSeatAsBooked(int row, int seat) {
+        if (row < 2) {
+            frontSeats[row][seat] = "X";
+        } else if (row < 4) {
+            centralSeats[row - 2][seat] = "X";
+        } else {
+            backSeats[row - 4][seat] = "X";
+        }
     }
 
     static void unBookSeat() {
-        System.out.println("Un Booking logic coming soon. ");
+        // To be implemented
+        System.out.println("Unbooking logic coming soon.");
     }
 
-    static void bussInspector() {
-
-    }
-
-    public static void main(String[] args) {
-        startBusService();
+    static void busInspector() {
+        // To be implemented
     }
 }
