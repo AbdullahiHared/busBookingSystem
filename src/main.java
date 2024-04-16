@@ -4,27 +4,17 @@ import java.time.Year;
 public class main {
     static Scanner mainScanner = new Scanner(System.in); // Declaring Scanner globally
 
-    static String[][] frontSeats = {
+    static String[][] busSeats = {
+            {"0", "0", "0", "0"},
+            {"0", "0", "0", "0"},
             {"0", "0", "0", "0"},
             {"0", "0", "0", "0"}
     };
-
-    static String[][] centralSeats = {
-            {"0", "0", "0", "0"},
-            {"0", "0", "0", "0"}
-    };
-
-    static String[][] backSeats = {
-            {"0", "0", "0", "0"},
-            {"0", "0", "0", "0"}
-    };
-
     public static void main(String[] args) {
         startBusService();
     }
 
     static void startBusService() {
-        showBus();
         switch (promptUserForRoleChoice()) {
             case 1:
                 busInspector();
@@ -40,12 +30,9 @@ public class main {
     static int promptUserForRoleChoice() {
         int choice;
         while (true) {
-            System.out.print("Choose from below:\t");
-            System.out.println("0. Exit\t 1. Bus Inspector\t 2. Passenger");
-            System.out.print(": ");
+            printRolesChoices();
             choice = mainScanner.nextInt();
-
-            if (choice == 0 || choice == 1 || choice == 2) {
+            if (choice == 1 || choice == 2 || choice == 3) {
                 return choice;
             } else {
                 System.out.println("Please enter a valid option from (0, 1, or 2).");
@@ -53,32 +40,43 @@ public class main {
         }
     }
 
+    static void printRolesChoices() {
+        System.out.println("Choose from below:");
+        System.out.println("1. Bus  Inspector:");
+        System.out.println("2. Passenger");
+        System.out.println("3. Exist");
+        System.out.print(": ");
+    }
+
     static void showBus() {
-        System.out.println("          _______");
-        System.out.println("   ___ /_____\\_____\\ ___");
-
-        System.out.println("  |       Front      |");
-        printSeats(frontSeats);
-        System.out.println("  |       Central    |");
-        printSeats(centralSeats);
-        System.out.println("  |       Back       |");
-        printSeats(backSeats);
-
+        printBusFrontSection();
+        printBusBack(); // Print the back of the bus
         System.out.println("  |_____________________|");
     }
 
-    static void printSeats(String[][] seats) {
-        for (String[] row : seats) {
-            printRow(row);
+    static void printBusFrontSection() {
+        System.out.printf("   %3s%n", "\\-/    \\-/");
+        System.out.println(" __>-<____>-<__");
+        System.out.println("/___|----------\\");
+        System.out.print("|_D_|__/   _===:");
+    }
+
+    static void printSeats(String[][] seats, String section) {
+        for (int i = 0; i < seats.length; i++) {
+            printRow(seats[i], section + " Row " + (i + 1));
             printEmptyRow();
         }
     }
 
-    static void printRow(String[] row) {
+    static void printRow(String[] row, String rowName) {
         System.out.println("  |                     |");
-        System.out.print("  |");
+        System.out.print("  |" + rowName + ": ");
         for (String seat : row) {
-            System.out.print(" " + seat + " ");
+            if (seat.equals("0")) {
+                System.out.print(" O ");
+            } else {
+                System.out.print(" X ");
+            }
         }
         System.out.println("|");
     }
@@ -88,26 +86,30 @@ public class main {
     }
 
     static void startCustomerService() {
-        switch (customerChoiceCenter()) {
+        switch (getCustomerChoice()) {
             case 1:
-                showBus();
-                break;
-            case 2:
                 bookSeat();
                 break;
-            case 3:
-                unBookSeat();
+            case 2:  showBus();
                 break;
+            case 3:
+                break;
+            case 4:
+                unBookSeat();
+                System.out.println("Find booked seat");;
             default:
-                System.out.println("Thanks for using our service ");
+                System.out.println("Thanks for using our service");
         }
     }
 
-    static int customerChoiceCenter() {
+    static int getCustomerChoice() {
         int customerChoice;
-        System.out.println("Welcome: Choose from the options below to continue.");
-        System.out.println("0. Exit\t 1. Show The Bus\t 2. Book Seat\t 3. Unbook Seat");
-        System.out.print(": ");
+        System.out.println("0.Exit");
+        System.out.println("1.Book seat");
+        System.out.println("2.Find your booking");
+        System.out.println("3.Show bus");
+        System.out.println("4.Cancel booking");
+        System.out.print("> ");
         customerChoice = mainScanner.nextInt();
 
         if (customerChoice >= 0 && customerChoice <= 3) {
@@ -115,7 +117,7 @@ public class main {
         } else {
             System.out.println("Please enter a valid option from (0, 1, 2, or 3).");
             // Recursive call for the user to try again.
-            return customerChoiceCenter();
+            return getCustomerChoice();
         }
     }
 
@@ -138,20 +140,20 @@ public class main {
     }
 
     static boolean isValidSeat(int row, int seat) {
-        return row >= 0 && row < frontSeats.length && seat >= 0 && seat < frontSeats[0].length;
+        return row >= 0 && row < busSeats.length && seat >= 0 && seat < busSeats[0].length;
     }
 
     static boolean isSeatAvailable(int row, int seat) {
-        return frontSeats[row][seat].equals("0") && centralSeats[row][seat].equals("0") && backSeats[row][seat].equals("0");
+        return busSeats[row][seat].equals("0") && busSeats[row][seat].equals("0") && busSeats[row][seat].equals("0");
     }
 
     static void markSeatAsBooked(int row, int seat) {
         if (row < 2) {
-            frontSeats[row][seat] = "X";
+            busSeats[row][seat] = "X";
         } else if (row < 4) {
-            centralSeats[row - 2][seat] = "X";
+            busSeats[row - 2][seat] = "X";
         } else {
-            backSeats[row - 4][seat] = "X";
+            busSeats[row - 4][seat] = "X";
         }
     }
 
@@ -162,5 +164,11 @@ public class main {
 
     static void busInspector() {
         // To be implemented
+    }
+
+    public static void printBusBack(){
+        System.out.println("\n|--------------|");
+        System.out.println("\\--------------/");
+        System.out.println(" \\-/_\\----/_\\-/\n");
     }
 }
