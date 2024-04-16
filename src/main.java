@@ -45,7 +45,7 @@ public class main {
         System.out.println("Choose from below:");
         System.out.println("1. Bus  Inspector:");
         System.out.println("2. Passenger");
-        System.out.println("3. Exist");
+        System.out.println("3. Exit");
         System.out.print(": ");
     }
 
@@ -136,7 +136,7 @@ public class main {
 
     static void userInfo() {
         userName();
-        promptUserForBirthDate();
+        promptPassengerForBirthDate();
     }
 
     static String[] userName() {
@@ -154,14 +154,14 @@ public class main {
         return userNameInfoReturner;
     }
 
-    final static String promptUserForBirthDate() {
+    final static String promptPassengerForBirthDate() {
         System.out.println("Please Enter Your Age in the format: ");
-        System.out.println("0000-00-00, ex: 2000-08-29");
+        System.out.println("YYYY-MM-DD, ex: 2000-08-29");
         String userBirthDate = mainScanner.next(); // Read as string
 
         if (!userBirthDate.matches("\\d{4}-\\d{2}-\\d{2}")) { // Check if it matches the pattern
             System.out.println("Invalid format. Please enter the date in the format yyyy-MM-dd. Try Again: ");
-            returnUserBirthDate(); // Restart the method if the format is incorrect
+            promptPassengerForBirthDate(); // Restart the method if the format is incorrect
             return null;
         }
 
