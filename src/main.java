@@ -51,14 +51,13 @@ public class main {
     static void showBus() {
         printBusFrontSection();
         printBusBack(); // Print the back of the bus
-        System.out.println("  |_____________________|");
     }
 
     static void printBusFrontSection() {
-        System.out.printf("   %3s%n", "\\-/    \\-/");
+        System.out.println("   /\\    /\\");
         System.out.println(" __>-<____>-<__");
         System.out.println("/___|----------\\");
-        System.out.print("|_D_|__/   _===:");
+        System.out.print("|__|__/   _===:");
     }
 
     static void printSeats(String[][] seats, String section) {
@@ -85,18 +84,19 @@ public class main {
         System.out.println("  |                     |");
     }
 
+
     static void startCustomerService() {
         switch (getCustomerChoice()) {
             case 1:
                 bookSeat();
                 break;
-            case 2:  showBus();
+            case 2: showBus();
                 break;
             case 3:
+                System.out.println("Find Booked Seat.");
                 break;
-            case 4:
-                unBookSeat();
-                System.out.println("Find booked seat");;
+            case 4: System.out.println("Un Book Seat");;
+            break;
             default:
                 System.out.println("Thanks for using our service");
         }
@@ -106,8 +106,8 @@ public class main {
         int customerChoice;
         System.out.println("0.Exit");
         System.out.println("1.Book seat");
-        System.out.println("2.Find your booking");
-        System.out.println("3.Show bus");
+        System.out.println("2.Show bus");
+        System.out.println("3.Find your booking");
         System.out.println("4.Cancel booking");
         System.out.print("> ");
         customerChoice = mainScanner.nextInt();
