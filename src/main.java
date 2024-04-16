@@ -136,6 +136,7 @@ public class main {
 
     static void userInfo() {
         userName();
+        promptUserForBirthDate();
     }
 
     static String[] userName() {
@@ -152,6 +153,21 @@ public class main {
         String[] userNameInfoReturner = {firstName, lastName};
         return userNameInfoReturner;
     }
+
+    final static String promptUserForBirthDate() {
+        System.out.println("Please Enter Your Age in the format: ");
+        System.out.println("0000-00-00, ex: 2000-08-29");
+        String userBirthDate = mainScanner.next(); // Read as string
+
+        if (!userBirthDate.matches("\\d{4}-\\d{2}-\\d{2}")) { // Check if it matches the pattern
+            System.out.println("Invalid format. Please enter the date in the format yyyy-MM-dd. Try Again: ");
+            returnUserBirthDate(); // Restart the method if the format is incorrect
+            return null;
+        }
+
+       return userBirthDate;
+    }
+
 
 
 
