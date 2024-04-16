@@ -10,6 +10,7 @@ public class main {
             {"0", "0", "0", "0"},
             {"0", "0", "0", "0"}
     };
+
     public static void main(String[] args) {
         startBusService();
     }
@@ -83,6 +84,11 @@ public class main {
     static void printEmptyRow() {
         System.out.println("  |                     |");
     }
+    public static void printBusBack() {
+        System.out.println("\n|--------------|");
+        System.out.println("\\--------------/");
+        System.out.println(" \\-/_\\----/_\\-/\n");
+    }
 
 
     static void startCustomerService() {
@@ -90,13 +96,16 @@ public class main {
             case 1:
                 bookSeat();
                 break;
-            case 2: showBus();
+            case 2:
+                showBus();
                 break;
             case 3:
                 System.out.println("Find Booked Seat.");
                 break;
-            case 4: System.out.println("Un Book Seat");;
-            break;
+            case 4:
+                System.out.println("Un Book Seat");
+                ;
+                break;
             default:
                 System.out.println("Thanks for using our service");
         }
@@ -122,40 +131,29 @@ public class main {
     }
 
     static void bookSeat() {
-        System.out.print("Enter row number (1 for first row, 2 for second row): ");
-        int row = mainScanner.nextInt() - 1; // Adjusting to array index
-        System.out.print("Enter seat number (1-4): ");
-        int seat = mainScanner.nextInt() - 1; // Adjusting to array index
+        userInfo();
+    }
 
-        if (isValidSeat(row, seat)) {
-            if (isSeatAvailable(row, seat)) {
-                System.out.println("Seat booked successfully!");
-                markSeatAsBooked(row, seat);
-            } else {
-                System.out.println("This seat is already booked. Please choose another seat.");
-            }
-        } else {
-            System.out.println("Invalid seat number. Please enter a valid row and seat number.");
+    static void userInfo() {
+        userName();
+    }
+
+    static String[] userName() {
+        System.out.print("Enter your first name: ");
+        String firstName = mainScanner.nextLine();
+        System.out.print("Enter your last name: ");
+        String lastName = mainScanner.nextLine();
+
+        if(lastName == "" ||firstName == "" ) {
+            System.out.println("Please Enter Name Info Correctly:");
+            userName();
         }
+
+        String[] userNameInfoReturner = {firstName, lastName};
+        return userNameInfoReturner;
     }
 
-    static boolean isValidSeat(int row, int seat) {
-        return row >= 0 && row < busSeats.length && seat >= 0 && seat < busSeats[0].length;
-    }
 
-    static boolean isSeatAvailable(int row, int seat) {
-        return busSeats[row][seat].equals("0") && busSeats[row][seat].equals("0") && busSeats[row][seat].equals("0");
-    }
-
-    static void markSeatAsBooked(int row, int seat) {
-        if (row < 2) {
-            busSeats[row][seat] = "X";
-        } else if (row < 4) {
-            busSeats[row - 2][seat] = "X";
-        } else {
-            busSeats[row - 4][seat] = "X";
-        }
-    }
 
     static void unBookSeat() {
         // To be implemented
@@ -164,11 +162,5 @@ public class main {
 
     static void busInspector() {
         // To be implemented
-    }
-
-    public static void printBusBack(){
-        System.out.println("\n|--------------|");
-        System.out.println("\\--------------/");
-        System.out.println(" \\-/_\\----/_\\-/\n");
     }
 }
