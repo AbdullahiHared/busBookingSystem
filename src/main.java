@@ -84,6 +84,7 @@ public class main {
     static void printEmptyRow() {
         System.out.println("  |                     |");
     }
+
     public static void printBusBack() {
         System.out.println("\n|--------------|");
         System.out.println("\\--------------/");
@@ -145,7 +146,7 @@ public class main {
         System.out.print("Enter your last name: ");
         String lastName = mainScanner.nextLine();
 
-        if(lastName == "" ||firstName == "" ) {
+        if (lastName == "" || firstName == "") {
             System.out.println("Please Enter Name Info Correctly:");
             userName();
         }
@@ -165,11 +166,8 @@ public class main {
             return null;
         }
 
-       return userBirthDate;
+        return userBirthDate;
     }
-
-
-
 
     static void unBookSeat() {
         // To be implemented
