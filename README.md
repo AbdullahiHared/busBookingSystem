@@ -1,3 +1,3 @@
 # busBookingSystem
-#This is a bus booking system. It is built using java. 
-#
+#Console based Ticket booking system for a buss. 
+# Built with JAVA
