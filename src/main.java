@@ -137,32 +137,44 @@ public class main {
         return userSelection;
     }
     static void bookSeat() {
-        validateWindowSeatSelection();
-        getUserInfo();
+        String userInfo = getUserInfo();
+        if (userInfo != null) {
+            String[] userInfoParts = userInfo.split(",");
+            String fullName = userInfoParts[0];
+            String birthDate = userInfoParts[1];
+            // Print or use the fullName and birthDate as needed
+            System.out.println("Full Name: " + fullName);
+            System.out.println("Birth Date: " + birthDate);
+        } else {
+            System.out.println("Error: Unable to get user information.");
+        }
         System.out.println("Your Seat was Successfully booked");
         startCustomerService();
     }
 
-    static void getUserInfo() {
-        userName();
-        promptPassengerForBirthDate();
+    static String getUserInfo() {
+        String fullName = userName();
+        mainScanner.nextLine();
+        String birthDate = promptPassengerForBirthDate();
+        return fullName + "," + birthDate;
     }
 
     static String userName() {
         System.out.print("Enter your first name: ");
-        String firstName = mainScanner.nextLine();
+        String firstName = mainScanner.next(); //
         System.out.print("Enter your last name: ");
-        String lastName = mainScanner.nextLine();
+        String lastName = mainScanner.next();
 
-        if (lastName == "" || firstName == "") {
-            System.out.println("Please Enter Name Info Correctly:");
-            userName();
+        mainScanner.nextLine();
+
+        if (lastName.isEmpty() || firstName.isEmpty()) {
+            System.out.println("Please enter name information correctly:");
+            return userName();
         }
-        String[] userFullname = {firstName, lastName};
-        String concatedFullName = userFullname[0] + " " + userFullname[1];
-        System.out.println();
-        return concatedFullName;
+
+        return firstName + " " + lastName;
     }
+
 
     final static String promptPassengerForBirthDate() {
         System.out.println("Please Enter Your Age in the format: ");
@@ -174,7 +186,6 @@ public class main {
             promptPassengerForBirthDate(); // Restart the method if the format is incorrect
             return null;
         }
-        System.out.println(userBirthDate);
         return userBirthDate;
     }
 
