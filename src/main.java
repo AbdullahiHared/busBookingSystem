@@ -131,16 +131,24 @@ public class main {
         }
     }
 
+    static String validateWindowSeatSelection() {
+        System.out.println("Would you like to book a window seat: Yes || NO: ");
+        String userSelection = mainScanner.next();
+        return userSelection;
+    }
     static void bookSeat() {
-        userInfo();
+        validateWindowSeatSelection();
+        getUserInfo();
+        System.out.println("Your Seat was Successfully booked");
+        startCustomerService();
     }
 
-    static void userInfo() {
+    static void getUserInfo() {
         userName();
         promptPassengerForBirthDate();
     }
 
-    static String[] userName() {
+    static String userName() {
         System.out.print("Enter your first name: ");
         String firstName = mainScanner.nextLine();
         System.out.print("Enter your last name: ");
@@ -150,9 +158,10 @@ public class main {
             System.out.println("Please Enter Name Info Correctly:");
             userName();
         }
-
-        String[] userNameInfoReturner = {firstName, lastName};
-        return userNameInfoReturner;
+        String[] userFullname = {firstName, lastName};
+        String concatedFullName = userFullname[0] + " " + userFullname[1];
+        System.out.println();
+        return concatedFullName;
     }
 
     final static String promptPassengerForBirthDate() {
@@ -165,7 +174,7 @@ public class main {
             promptPassengerForBirthDate(); // Restart the method if the format is incorrect
             return null;
         }
-
+        System.out.println(userBirthDate);
         return userBirthDate;
     }
 
