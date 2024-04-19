@@ -4,15 +4,14 @@ import java.time.Year;
 public class main {
     static Scanner mainScanner = new Scanner(System.in); // Declaring Scanner globally
 
-    static String[][] busSeats = {
-            {"0", "0", "0", "0"},
-            {"0", "0", "0", "0"},
-            {"0", "0", "0", "0"},
-            {"0", "0", "0", "0"}
-    };
-
     public static void main(String[] args) {
         startBusService();
+        String[][] busSeats = {
+                {"0", "0", "0", "0"},
+                {"0", "0", "0", "0"},
+                {"0", "0", "0", "0"},
+                {"0", "0", "0", "0"}
+        };
     }
 
     static void startBusService() {
@@ -171,7 +170,6 @@ public class main {
             System.out.println("Please enter name information correctly:");
             return userName();
         }
-
         return firstName + " " + lastName;
     }
 
@@ -184,11 +182,9 @@ public class main {
         if (!userBirthDate.matches("\\d{4}-\\d{2}-\\d{2}")) { // Check if it matches the pattern
             System.out.println("Invalid format. Please enter the date in the format yyyy-MM-dd. Try Again: ");
             promptPassengerForBirthDate(); // Restart the method if the format is incorrect
-            return null;
         }
         return userBirthDate;
     }
-
     static void unBookSeat() {
         // To be implemented
         System.out.println("Unbooking logic coming soon.");
