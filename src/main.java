@@ -9,6 +9,7 @@ public class main {
             {"0", "0", "0", "0"},
             {"0", "0", "0", "0"}
     };
+
     public static void main(String[] args) {
         startBusService();
     }
@@ -85,6 +86,7 @@ public class main {
         System.out.println("\n|--------------|");
         System.out.println(" \\-/_\\----/_\\-/\n");
     }
+
     static void printWheels(int row) {
         if (row == 1 || row == 3) {
             System.out.print("\n()----------()");
@@ -152,6 +154,7 @@ public class main {
         String userSelection = mainScanner.next();
         return userSelection;
     }
+
     static void bookSeat() {
         String userInfo = getUserInfo();
         if (userInfo != null) {
@@ -189,6 +192,7 @@ public class main {
         }
         return firstName + " " + lastName;
     }
+
     final static String promptPassengerForBirthDate() {
         System.out.println("Please Enter Your Age in the format: ");
         System.out.println("YYYY-MM-DD, ex: 2000-08-29");
@@ -200,10 +204,12 @@ public class main {
         }
         return userBirthDate;
     }
+
     static void unBookSeat() {
         // To be implemented
         System.out.println("Unbooking logic coming soon.");
     }
+
     static void busInspector() {
         // To be implemented
     }
