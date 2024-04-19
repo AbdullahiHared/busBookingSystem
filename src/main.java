@@ -3,15 +3,14 @@ import java.time.Year;
 
 public class main {
     static Scanner mainScanner = new Scanner(System.in); // Declaring Scanner globally
-
+    static String[][] busSeats = {
+            {"0", "0", "0", "0"},
+            {"0", "0", "0", "0"},
+            {"0", "0", "0", "0"},
+            {"0", "0", "0", "0"}
+    };
     public static void main(String[] args) {
         startBusService();
-        String[][] busSeats = {
-                {"0", "0", "0", "0"},
-                {"0", "0", "0", "0"},
-                {"0", "0", "0", "0"},
-                {"0", "0", "0", "0"}
-        };
     }
 
     static void startBusService() {
@@ -56,8 +55,6 @@ public class main {
     static void printBusFrontSection() {
         System.out.println("   /\\    /\\");
         System.out.println(" __>-<____>-<__");
-        System.out.println("/___|----------\\");
-        System.out.print("|__|__/   _===:");
     }
 
     static void printSeats(String[][] seats, String section) {
@@ -86,10 +83,30 @@ public class main {
 
     public static void printBusBack() {
         System.out.println("\n|--------------|");
-        System.out.println("\\--------------/");
         System.out.println(" \\-/_\\----/_\\-/\n");
     }
+    static void printWheels(int row) {
+        if (row == 1 || row == 3) {
+            System.out.print("\n()----------()");
+        }
+    }
 
+    static void printBusSeats() {
+        printBusFrontSection(); // Print the front section of the bus
+        for (int i = 0; i < busSeats.length; i++) {
+            printWheels(i); // Print the wheels for even-indexed rows
+            for (int j = 0; j < busSeats[i].length; j++) {
+                if (j == 0) {
+                    System.out.print("\n"); // Move to the next line at the start of each row
+                }
+                System.out.print("|" + busSeats[i][j] + "|"); // Print each seat
+                if (j == busSeats[i].length - 1 && i % 2 != 0) {
+                    System.out.println("/");
+                }
+            }
+        }
+        printBusBack(); // Print the back section of the bus
+    }
 
     static void startCustomerService() {
         switch (getCustomerChoice()) {
@@ -97,7 +114,7 @@ public class main {
                 bookSeat();
                 break;
             case 2:
-                showBus();
+                printBusSeats();
                 break;
             case 3:
                 System.out.println("Find Booked Seat.");
@@ -172,8 +189,6 @@ public class main {
         }
         return firstName + " " + lastName;
     }
-
-
     final static String promptPassengerForBirthDate() {
         System.out.println("Please Enter Your Age in the format: ");
         System.out.println("YYYY-MM-DD, ex: 2000-08-29");
@@ -189,7 +204,6 @@ public class main {
         // To be implemented
         System.out.println("Unbooking logic coming soon.");
     }
-
     static void busInspector() {
         // To be implemented
     }
