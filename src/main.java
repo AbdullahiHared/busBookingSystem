@@ -122,8 +122,7 @@ public class main {
                 System.out.println("Find Booked Seat.");
                 break;
             case 4:
-                System.out.println("Un Book Seat");
-                ;
+                unBookSeat();
                 break;
             default:
                 System.out.println("Thanks for using our service");
@@ -140,7 +139,7 @@ public class main {
         System.out.print("> ");
         customerChoice = mainScanner.nextInt();
 
-        if (customerChoice >= 0 && customerChoice <= 3) {
+        if (customerChoice >= 0 && customerChoice <= 4) {
             return customerChoice;
         } else {
             System.out.println("Please enter a valid option from (0, 1, 2, or 3).");
@@ -211,11 +210,13 @@ public class main {
             System.out.println("Which row would you like to book a seat in (0-3): ");
             int row = mainScanner.nextInt();
             System.out.println("Which seat would you like to book from this row (0-3): ");
+            informAboutWindowSeats();
             int seat = mainScanner.nextInt();
 
             if (row >= 0 && row < busSeats.length && seat >= 0 && seat < busSeats[row].length) {
                 if (!checkSeatBooked(row, seat)) {
                     System.out.println("Seat is already booked. Please select an unreserved seat.");
+                    customerSeatChoice();
                 } else {
                     System.out.println("Seat was Successfully Booked");
                     busSeats[row][seat] = "X"; // Mark seat as booked
@@ -232,8 +233,19 @@ public class main {
         return -1; // Default value in case of exceptions or invalid input
     }
 
+    static void informAboutWindowSeats() {
+        // Inform about window seats (Seats Numbers 0 and 4 are windows)
+        System.out.println("Seats Numbers 0 and 4 are windows");
+
+    }
+
     static boolean checkSeatBooked(int row, int seat) {
         return !busSeats[row][seat].equals("X");
+    }
+
+    static int getCustomerBirthYear(String birthDate) {
+        int customerBirthYear = Integer.parseInt(birthDate.substring(0, 4));
+        return customerBirthYear;
     }
 
     static void unBookSeat() {
