@@ -157,6 +157,7 @@ public class main {
 
     static void bookSeat() {
         String userInfo = getUserInfo();
+        customerSeatChoice();
         if (userInfo != null) {
             String[] userInfoParts = userInfo.split(",");
             String fullName = userInfoParts[0];
@@ -203,6 +204,36 @@ public class main {
             promptPassengerForBirthDate(); // Restart the method if the format is incorrect
         }
         return userBirthDate;
+    }
+
+    static int customerSeatChoice() {
+        try {
+            System.out.println("Which row would you like to book a seat in (0-3): ");
+            int row = mainScanner.nextInt();
+            System.out.println("Which seat would you like to book from this row (0-3): ");
+            int seat = mainScanner.nextInt();
+
+            if (row >= 0 && row < busSeats.length && seat >= 0 && seat < busSeats[row].length) {
+                if (!checkSeatBooked(row, seat)) {
+                    System.out.println("Seat is already booked. Please select an unreserved seat.");
+                } else {
+                    System.out.println("Seat was Successfully Booked");
+                    busSeats[row][seat] = "X"; // Mark seat as booked
+                    return row;
+                }
+            } else {
+                System.out.println("Invalid seat selection. Please select a valid seat.");
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid input. Please select an unreserved seat.");
+            e.printStackTrace(); // Print the stack trace for debugging
+            mainScanner.nextLine(); // Consume invalid input
+        }
+        return -1; // Default value in case of exceptions or invalid input
+    }
+
+    static boolean checkSeatBooked(int row, int seat) {
+        return !busSeats[row][seat].equals("X");
     }
 
     static void unBookSeat() {
