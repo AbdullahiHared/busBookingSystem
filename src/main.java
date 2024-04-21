@@ -257,15 +257,34 @@ public class main {
     }
 
     static void unBookSeat() {
+        String birthDate = promptPassengerForBirthDate();
+        if (birthDate.length() == 10) {
+            boolean bookingCancelled = false;
 
+            for (int i = 0; i < busSeats.length; i++) {
+                for (int j = 0; j < busSeats.length; j++) {
+
+                }
+            }
+        }
     }
+
 
     static void UnreserveSeat(int row, int seat) {
-       busSeats[row][seat].equals(0);
+        busSeats[row][seat].equals("0");
     }
-
 
     static void busInspector() {
-        // To be implemented
+        printInspectorChoices();
     }
+
+    static void printInspectorChoices() {
+        System.out.println("0. Exit");
+        System.out.println("1. Display current profit:");
+        System.out.println("2. Sort Customers by age:");
+        System.out.println("3. Shows customers:");
+        System.out.println("4. Check Profit");
+        System.out.print("> ");
+    }
+
 }
