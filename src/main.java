@@ -54,6 +54,7 @@ public class main {
     }
 
     static void printBusFrontSection() {
+        System.out.println();
         System.out.println("   /\\    /\\");
         System.out.println(" __>-<____>-<__");
     }
@@ -108,6 +109,9 @@ public class main {
             }
         }
         printBusBack(); // Print the back section of the bus
+
+        System.out.println();
+        startCustomerService(); // resume customer service
     }
 
     static void startCustomerService() {
@@ -167,7 +171,6 @@ public class main {
         } else {
             System.out.println("Error: Unable to get user information.");
         }
-        System.out.println("Your Seat was Successfully booked");
         startCustomerService();
     }
 
@@ -234,8 +237,8 @@ public class main {
     }
 
     static void informAboutWindowSeats() {
-        // Inform about window seats (Seats Numbers 0 and 4 are windows)
-        System.out.println("Seats Numbers 0 and 4 are windows");
+        // Inform about window seats (Seats Numbers 0 and 3 are windows)
+        System.out.println("Seats Numbers 0 and 3 are windows");
 
     }
 
@@ -244,14 +247,23 @@ public class main {
     }
 
     static int getCustomerBirthYear(String birthDate) {
+        int currentYear = Year.now().getValue();
         int customerBirthYear = Integer.parseInt(birthDate.substring(0, 4));
-        return customerBirthYear;
+        if (currentYear >= customerBirthYear) {
+            return customerBirthYear;
+        } else {
+            return -1;
+        }
     }
 
     static void unBookSeat() {
-        // To be implemented
-        System.out.println("Unbooking logic coming soon.");
+
     }
+
+    static void UnreserveSeat(int row, int seat) {
+       busSeats[row][seat].equals(0);
+    }
+
 
     static void busInspector() {
         // To be implemented
