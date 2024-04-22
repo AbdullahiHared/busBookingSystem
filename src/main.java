@@ -9,6 +9,7 @@ public class main {
             {"0", "0", "0", "0"},
             {"0", "0", "0", "0"}
     };
+    static String[][] customers = new String[20][3]; //array to store customers data.
 
     public static void main(String[] args) {
         startBusService();
@@ -285,7 +286,6 @@ public class main {
         System.out.println("4. Show Bus");
         System.out.print("> ");
     }
-
     static int getInspectorChoice() {
         printInspectorChoices();
         int inspectorChoice = mainScanner.nextInt();
@@ -297,7 +297,7 @@ public class main {
                 System.out.println("Sorted customers will be here: ");
                 break;
             case 3:
-                System.out.println("Current total customers will be here: ");
+                System.out.println("Current total customers are: " + customers.length);
                 break;
             case 4:
                 printBusSeats();
@@ -306,7 +306,6 @@ public class main {
         }
         return inspectorChoice;
     }
-
 
 }
 
