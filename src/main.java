@@ -111,7 +111,6 @@ public class main {
         printBusBack(); // Print the back section of the bus
 
         System.out.println();
-        startCustomerService(); // resume customer service
     }
 
     static void startCustomerService() {
@@ -275,7 +274,7 @@ public class main {
     }
 
     static void busInspector() {
-        printInspectorChoices();
+        getInspectorChoice();
     }
 
     static void printInspectorChoices() {
@@ -283,8 +282,31 @@ public class main {
         System.out.println("1. Display current profit:");
         System.out.println("2. Sort Customers by age:");
         System.out.println("3. Shows customers:");
-        System.out.println("4. Check Profit");
+        System.out.println("4. Show Bus");
         System.out.print("> ");
     }
 
+    static int getInspectorChoice() {
+        printInspectorChoices();
+        int inspectorChoice = mainScanner.nextInt();
+        switch (inspectorChoice) {
+            case 1:
+                System.out.println("current profit is : " + 299);
+                break;
+            case 2:
+                System.out.println("Sorted customers will be here: ");
+                break;
+            case 3:
+                System.out.println("Current total customers will be here: ");
+                break;
+            case 4:
+                printBusSeats();
+                busInspector(); // resume Inspector service;
+
+        }
+        return inspectorChoice;
+    }
+
+
 }
+
