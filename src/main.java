@@ -3,12 +3,7 @@ import java.time.Year;
 
 public class main {
     static Scanner mainScanner = new Scanner(System.in); // Declaring Scanner globally
-    static String[][] busSeats = {
-            {"0", "0", "0", "0"},
-            {"0", "0", "0", "0"},
-            {"0", "0", "0", "0"},
-            {"0", "0", "0", "0"}
-    };
+    static String[][] busSeats = {{"0", "0", "0", "0"}, {"0", "0", "0", "0"}, {"0", "0", "0", "0"}, {"0", "0", "0", "0"}};
     static String[][] customers = new String[20][3]; //array to store customers data.
 
     public static void main(String[] args) {
@@ -25,6 +20,7 @@ public class main {
                 break;
             default:
                 System.out.println("Thanks for using our service ");
+                startBusService();
         }
     }
 
@@ -160,19 +156,27 @@ public class main {
 
     static void bookSeat() {
         String userInfo = getUserInfo();
-        customerSeatChoice();
-        if (userInfo != null) {
+        int rowIndex = customerSeatChoice(); // Get the row index of the booked seat
+        if (rowIndex != -1 && userInfo != null) { // Check if a valid seat was booked and user info is available
             String[] userInfoParts = userInfo.split(",");
             String fullName = userInfoParts[0];
             String birthDate = userInfoParts[1];
-            // Print or use the fullName and birthDate as needed
-            System.out.println("Full Name: " + fullName);
-            System.out.println("Birth Date: " + birthDate);
+            addCustomerData(rowIndex, String.valueOf(rowIndex), birthDate, fullName); // Add customer data
+            informAboutTicketBooking(fullName, 300, birthDate);
+            startCustomerService();
         } else {
-            System.out.println("Error: Unable to get user information.");
+            System.out.println("Error: Unable to book the seat or get user information.");
         }
-        startCustomerService();
     }
+
+    static void informAboutTicketBooking(String fullName, int price, String birthDate) {
+        System.out.println("Booking Info: ");
+        System.out.println("Full Name: " + fullName);
+        System.out.println("BirthDate : " + birthDate);
+        System.out.println("Price : " + price + " kr");
+        System.out.println("Welcome on board <>");
+    }
+
 
     static String getUserInfo() {
         String fullName = userName();
@@ -196,7 +200,7 @@ public class main {
         return firstName + " " + lastName;
     }
 
-    final static String promptPassengerForBirthDate() {
+    static String promptPassengerForBirthDate() {
         System.out.println("Please Enter Your Age in the format: ");
         System.out.println("YYYY-MM-DD, ex: 2000-08-29");
         String userBirthDate = mainScanner.next(); // Read as string
@@ -256,6 +260,12 @@ public class main {
         }
     }
 
+    static void addCustomerData(int rowIndex, String seatNumber, String birthDate, String fullName) {
+        customers[rowIndex][0] = seatNumber;
+        customers[rowIndex][1] = birthDate;
+        customers[rowIndex][2] = fullName;
+    }
+
     static void unBookSeat() {
         String birthDate = promptPassengerForBirthDate();
         if (birthDate.length() == 10) {
@@ -286,6 +296,7 @@ public class main {
         System.out.println("4. Show Bus");
         System.out.print("> ");
     }
+
     static int getInspectorChoice() {
         printInspectorChoices();
         int inspectorChoice = mainScanner.nextInt();
@@ -297,14 +308,27 @@ public class main {
                 System.out.println("Sorted customers will be here: ");
                 break;
             case 3:
-                System.out.println("Current total customers are: " + customers.length);
+                currentCustomers();
                 break;
             case 4:
                 printBusSeats();
                 busInspector(); // resume Inspector service;
-
         }
         return inspectorChoice;
+    }
+
+    static String currentCustomers() {
+        int currentCount = 0;
+        for (int i = 0; i < customers.length; i++) {
+            for (int j = 0; j < customers[i].length; j++) {
+                if (customers[i][j] == null) { // Check if there is customer data
+                    currentCount++;
+                } else {
+                    System.out.println("Error: Something is wrong");
+                }
+            }
+        }
+        return currentCount + "Are the total Customers";
     }
 
 }
