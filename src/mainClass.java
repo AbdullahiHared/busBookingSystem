@@ -1,7 +1,7 @@
 import java.util.Scanner;
 import java.time.Year;
 
-public class main {
+public class mainClass {
     static Scanner mainScanner = new Scanner(System.in); // Declaring Scanner globally
     static int profit = 0;
     static String[][] busSeats = {
@@ -173,14 +173,14 @@ public class main {
                 case 2:
                     profit += 149;
             }
-            informAboutTicketBooking(fullName, Integer.valueOf(birthDate), seatNumber, seatNumber);
+            informAboutTicketBooking(fullName, Integer.parseInt(birthDate), seatNumber);
             startCustomerService();
         } else {
             System.out.println("Error: Unable to book the seat or get user information.");
         }
     }
 
-    static void informAboutTicketBooking(String fullName, int birthDate, String SeatNumber, String seatNumber) {
+    static void informAboutTicketBooking(String fullName, int birthDate, String seatNumber) {
         System.out.println("Booking Info: ");
         System.out.println("Full Name: " + fullName);
         System.out.println("BirthDate : " + birthDate);
@@ -299,7 +299,6 @@ public class main {
             }
         } catch (Exception e) {
             System.out.println("Something went wrong");
-            e.printStackTrace(); // Print the stack trace for debugging
         } finally {
             System.out.println("Your ticket information was successfully saved.");
         }
@@ -314,7 +313,7 @@ public class main {
             if (customer[0].equals(String.valueOf(passengerSeat)) && customer[2].equals(birthDate)) {
                 int rowNumber = Integer.parseInt(customer[0]);
                 int seatNumber = Integer.parseInt(customer[0]);
-                unreserveSeat(rowNumber, seatNumber);
+                updateSeatReservation(rowNumber, seatNumber);
                 System.out.println("Ticket Cancelling Was Successfully: ");
                 int customerAge = getCustomerAge(Integer.toString(birthDate));
                 switch (customerAge) {
@@ -328,8 +327,8 @@ public class main {
         }
     }
 
-    static void unreserveSeat(int row, int seat) {
-        busSeats[row][seat].equals("0");
+    static void updateSeatReservation(int row, int seat) {
+        busSeats[row][seat] = ("0");
     }
 
     static void busInspector() {
@@ -371,13 +370,13 @@ public class main {
 
     static String getCurrentCustomers() {
         int currentCount = 0;
-        for (int i = 0; i < customers.length; i++) {
-            if (customers[i][0] != null) { // Check if there is customer data
+        for (String[] customer : customers) {
+            if (customer[0] != null) { // Check if there is customer data
                 currentCount++;
                 System.out.println("Customer: " + currentCount + ": ");
-                System.out.println("FullName: " + customers[i][3]);
-                System.out.println("Seat Number: " + customers[i][0]);
-                System.out.println("Birthdate: " + customers[i][2]);
+                System.out.println("FullName: " + customer[3]);
+                System.out.println("Seat Number: " + customer[0]);
+                System.out.println("Birthdate: " + customer[2]);
                 System.out.println();
             }
         }
