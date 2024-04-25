@@ -3,12 +3,13 @@ import java.time.Year;
 
 public class main {
     static Scanner mainScanner = new Scanner(System.in); // Declaring Scanner globally
+    static int profit = 0;
     static String[][] busSeats = {
             {"0", "0", "0", "0"},
             {"0", "0", "0", "0"},
             {"0", "0", "0", "0"},
             {"0", "0", "0", "0"}};
-    static String[][] customers = new String[20][3]; //array to store customers data.
+    static String[][] customers = new String[20][4]; //array to store customers data.
 
     public static void main(String[] args) {
         startBusService();
@@ -81,7 +82,7 @@ public class main {
     }
 
     static void printEmptyRow() {
-        System.out.println("  |                     |");
+        System.out.println("|    ->           <-    |");
     }
 
     public static void printBusBack() {
@@ -161,33 +162,40 @@ public class main {
 
     static void bookSeat() {
         String userInfo = getUserInfo();
-        int seatInfo[] = customerSeatChoice(); // Get the seat info of the booked seat
+        int[] seatInfo = customerSeatChoice(); // Get the seat info of the booked seat
         if (seatInfo[1] == -1 || seatInfo[0] != -1 && userInfo != null) { // Check if a valid seat was booked and user info is available
             String[] userInfoParts = userInfo.split(",");
             String seatNumber = String.valueOf(seatInfo[1]);
+            String rowNumber = String.valueOf(seatInfo[0]);
             String fullName = userInfoParts[0];
             String birthDate = userInfoParts[1];
-            addCustomerData(seatNumber, birthDate, fullName); // Add customer data
-            informAboutTicketBooking(fullName, 300, birthDate, 30);
+            addCustomerData(seatNumber, rowNumber, birthDate, fullName); // Add customer data
+            int customerAge = getCustomerAge(birthDate);
+            switch (customerAge) {
+                case 1:
+                    profit += 299;
+                    break;
+                case 2:
+                    profit += 149;
+            }
+            informAboutTicketBooking(fullName, Integer.valueOf(birthDate), seatNumber, seatNumber);
             startCustomerService();
         } else {
             System.out.println("Error: Unable to book the seat or get user information.");
         }
     }
 
-    static void informAboutTicketBooking(String fullName, int price, String birthDate, int SeatNumber) {
+    static void informAboutTicketBooking(String fullName, int birthDate, String SeatNumber, String seatNumber) {
         System.out.println("Booking Info: ");
         System.out.println("Full Name: " + fullName);
         System.out.println("BirthDate : " + birthDate);
-        System.out.println("Price : " + price + " kr");
+        System.out.println("Seat Number : " + seatNumber);
         System.out.println("Welcome on board <>");
     }
 
-
     static String getUserInfo() {
         String fullName = userName();
-        mainScanner.nextLine();
-        String birthDate = promptPassengerForBirthDate();
+        int birthDate = promptPassengerForBirthDate();
         return fullName + "," + birthDate;
     }
 
@@ -206,16 +214,21 @@ public class main {
         return firstName + " " + lastName;
     }
 
-    static String promptPassengerForBirthDate() {
-        System.out.println("Please Enter Your Age in the format: ");
-        System.out.println("YYYY-MM-DD, ex: 2000-08-29");
-        String userBirthDate = mainScanner.next(); // Read as string
+    static boolean isValidDateFormat(String date) {
+        // Regular expression to match the format yyyyMMdd
+        String regex = "\\d{8}"; // This matches exactly 8 digits
+        return date.matches(regex);
+    }
 
-        if (!userBirthDate.matches("\\d{4}-\\d{2}-\\d{2}")) { // Check if it matches the pattern
-            System.out.println("Invalid format. Please enter the date in the format yyyy-MM-dd. Try Again: ");
-            promptPassengerForBirthDate(); // Restart the method if the format is incorrect
+    static int promptPassengerForBirthDate() {
+        System.out.println("Please enter your birth date in the format yyyyMMdd:");
+        String userInput = mainScanner.next();
+        if (isValidDateFormat(userInput)) {
+            return Integer.parseInt(userInput);
+        } else {
+            System.out.println("Invalid format. Please enter the date in the format yyyyMMdd. Try Again:");
+            return promptPassengerForBirthDate(); // Recursive call to re-prompt the user
         }
-        return userBirthDate;
     }
 
     static int[] customerSeatChoice() {
@@ -251,7 +264,6 @@ public class main {
             customerSeatChoice(); // Recursive call for the user to re-enter seats info
         } catch (Exception e) {
             System.out.println("Invalid input. Please select an unreserved seat.");
-            e.printStackTrace(); // Print the stack trace for debugging
             mainScanner.nextLine(); // Consume invalid input
         }
         return seatInfo;
@@ -267,53 +279,61 @@ public class main {
         return !busSeats[row][seat].equals("X");
     }
 
-    static int getCustomerBirthYear(String birthDate) {
+    static int getCustomerAge(String birthDate) {
         int currentYear = Year.now().getValue();
         int customerBirthYear = Integer.parseInt(birthDate.substring(0, 4));
-        if (currentYear >= customerBirthYear) {
-            return customerBirthYear;
+        if (customerBirthYear - currentYear >= 18) {
+            return 1;
         } else {
-            return -1;
+            return 2;
         }
     }
 
-    static void addCustomerData(String seatNumber, String birthDate, String fullName) {
+    static void addCustomerData(String seatNumber, String rowIndex, String birthDate, String fullName) {
         boolean dataAdded = false;
-        for (int i = 0; i < customers.length; i++) {
-            for (int j = 0; j < customers[i].length && !dataAdded; j++) {
-                try {
-                    if (customers[i][j] == null) {
-                        customers[i][0] = seatNumber;
-                        customers[i][1] = birthDate;
-                        customers[i][2] = fullName;
-                        dataAdded = true; //set it to true one the data is added
-                    }
-                } catch (Exception e) {
-                    System.out.println("Something went wrong");
-                    e.printStackTrace(); // Print the stack trace for debugging
-                } finally {
-                    System.out.println("Your ticket information was successfully saved.");
+        try {
+            for (int i = 0; i < customers.length && !dataAdded; i++) {
+
+                if (customers[i][0] == null || customers[i][0].isEmpty()) { // Checking if the seatNumber field is empty
+                    customers[i][0] = seatNumber;
+                    customers[i][1] = rowIndex;
+                    customers[i][2] = birthDate;
+                    customers[i][3] = fullName;
+                    dataAdded = true; // Set it to true once the data is added
                 }
             }
+        } catch (Exception e) {
+            System.out.println("Something went wrong");
+            e.printStackTrace(); // Print the stack trace for debugging
+        } finally {
+            System.out.println("Your ticket information was successfully saved.");
         }
     }
+
 
     static void unBookSeat() {
-        String birthDate = promptPassengerForBirthDate();
+        int birthDate = promptPassengerForBirthDate();
         System.out.print("Please Enter Which seat number you had: ");
         int passengerSeat = mainScanner.nextInt();
-        if (birthDate.length() == 10) {
-            boolean bookingCancelled = false;
-
-            for (int i = 0; i < busSeats.length; i++) {
-                for (int j = 0; j < busSeats.length; j++) {
-
+        for (String[] customer : customers) {
+            if (customer[0].equals(String.valueOf(passengerSeat)) && customer[2].equals(birthDate)) {
+                int rowNumber = Integer.parseInt(customer[0]);
+                int seatNumber = Integer.parseInt(customer[0]);
+                unreserveSeat(rowNumber, seatNumber);
+                System.out.println("Ticket Cancelling Was Successfully: ");
+                int customerAge = getCustomerAge(Integer.toString(birthDate));
+                switch (customerAge) {
+                    case 1:
+                        profit -= 299;
+                        break;
+                    case 2:
+                        profit -= 149;
                 }
             }
         }
     }
 
-    static void UnreserveSeat(int row, int seat) {
+    static void unreserveSeat(int row, int seat) {
         busSeats[row][seat].equals("0");
     }
 
@@ -335,13 +355,15 @@ public class main {
         int inspectorChoice = mainScanner.nextInt();
         switch (inspectorChoice) {
             case 1:
-                System.out.println("current profit is : " + 299);
+                System.out.println("Current profit is " + profit);
+                busInspector();
                 break;
             case 2:
                 System.out.println("Sorted customers will be here: ");
+                busInspector();
                 break;
             case 3:
-                currentCustomers();
+                getCurrentCustomers();
                 break;
             case 4:
                 printBusSeats();
@@ -352,17 +374,20 @@ public class main {
         return inspectorChoice;
     }
 
-    static String currentCustomers() {
+    static String getCurrentCustomers() {
         int currentCount = 0;
         for (int i = 0; i < customers.length; i++) {
-            for (int j = 0; j < customers[i].length; j++) {
-                if (customers[i][j] != null) { // Check if there is customer data
-                    currentCount++;
-                }
+            if (customers[i][0] != null) { // Check if there is customer data
+                currentCount++;
+                System.out.println("Customer: " + currentCount + ": ");
+                System.out.println("FullName: " + customers[i][3]);
+                System.out.println("Seat Number: " + customers[i][0]);
+                System.out.println("Birthdate: " + customers[i][2]);
+                System.out.println();
             }
         }
 
-        return "Current Customer: " + currentCount;
+        return "";
     }
 
 }
