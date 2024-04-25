@@ -50,11 +50,6 @@ public class main {
         System.out.print(": ");
     }
 
-    static void showBus() {
-        printBusFrontSection();
-        printBusBack(); // Print the back of the bus
-    }
-
     static void printBusFrontSection() {
         System.out.println();
         System.out.println("   /\\    /\\");
