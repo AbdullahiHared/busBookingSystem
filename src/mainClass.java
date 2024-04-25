@@ -56,13 +56,6 @@ public class mainClass {
         System.out.println(" __>-<____>-<__");
     }
 
-    static void printSeats(String[][] seats, String section) {
-        for (int i = 0; i < seats.length; i++) {
-            printRow(seats[i], section + " Row " + (i + 1));
-            printEmptyRow();
-        }
-    }
-
     static void printRow(String[] row, String rowName) {
         System.out.println("  |                     |");
         System.out.print("  |" + rowName + ": ");
