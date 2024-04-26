@@ -5,10 +5,11 @@ public class mainClass {
     static Scanner mainScanner = new Scanner(System.in); // Declaring Scanner globally
     static int profit = 0;
     static String[][] busSeats = {
-            {"0", "0", "0", "0"},
-            {"0", "0", "0", "0"},
-            {"0", "0", "0", "0"},
-            {"0", "0", "0", "0"}};
+            {"1", "2", "3", "4"},
+            {"5", "6", "7", "8"},
+            {"9", "10", "11", "12"},
+            {"13", "14", "15", "16"},
+            {"17", "18", "19", "20"}};
     static String[][] customers = new String[20][4]; //array to store customers data.
 
     public static void main(String[] args) {
@@ -193,6 +194,36 @@ public class mainClass {
         } else {
             System.out.println("Invalid format. Please enter the date in the format yyyyMMdd. Try Again:");
             return promptPassengerForBirthDate(); // Recursive call to re-prompt the user
+        }
+    }
+
+    static int getCustomerSeatChoice() {
+        int windowSelectionAnswer = getUserWindowSelection();
+        switch (windowSelectionAnswer) {
+            case 1:
+                getUserWindowSelection();
+                break;
+            case 2:
+                customerSeatChoice();
+                break;
+            default:
+                System.out.println("Error Try Again");
+        }
+        return 1;
+    }
+
+    static void customerSeatChoice() {
+        System.out.println();
+    }
+
+    static void getUnbookedSeats() {
+        String unBookedSeats = "";
+        for (int i = 0; i < busSeats.length; i++) {
+            for (int j = 0; j < busSeats[i].length; j++) {
+                if (busSeats[j].equals("O")) {
+                    unBookedSeats += busSeats[]
+                }
+            }
         }
     }
 
