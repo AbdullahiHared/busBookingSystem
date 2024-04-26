@@ -37,7 +37,7 @@ public class mainClass {
             if (choice == 1 || choice == 2 || choice == 3) {
                 return choice;
             } else {
-                System.out.println("Please enter a valid option from (0, 1, or 2).");
+                System.out.println("Please enter a valid option from (1, 2, or 3).");
             }
         }
     }
@@ -51,31 +51,13 @@ public class mainClass {
     }
 
     static void printBusFrontSection() {
-        System.out.println();
         System.out.println("   /\\    /\\");
-        System.out.println(" __>-<____>-<__");
-    }
-
-    static void printRow(String[] row, String rowName) {
-        System.out.println("  |                     |");
-        System.out.print("  |" + rowName + ": ");
-        for (String seat : row) {
-            if (seat.equals("0")) {
-                System.out.print(" O ");
-            } else {
-                System.out.print(" X ");
-            }
-        }
-        System.out.println("|");
-    }
-
-    static void printEmptyRow() {
-        System.out.println("|    ->           <-    |");
+        System.out.println("__>-<____>-<__");
     }
 
     public static void printBusBack() {
-        System.out.println("\n|--------------|");
-        System.out.println(" \\-/_\\----/_\\-/\n");
+        System.out.println("\n|------------|");
+        System.out.println("\\-/_\\----/_\\-/\n");
     }
 
     static void printWheels(int row) {
@@ -92,16 +74,17 @@ public class mainClass {
                 if (j == 0) {
                     System.out.print("\n"); // Move to the next line at the start of each row
                 }
-                System.out.print("|" + busSeats[i][j] + "|"); // Print each seat
-                if (j == busSeats[i].length - 1 && i % 2 != 0) {
-                    System.out.println("/");
+                if (j % 2 == 0 && j != 0) {
+                    System.out.print("  "); // Add a space every third seat
                 }
+                System.out.print("|" + busSeats[i][j] + "|"); // Print each seat
             }
         }
         printBusBack(); // Print the back section of the bus
 
         System.out.println();
     }
+
 
     static void startCustomerService() {
         switch (getCustomerChoice()) {
@@ -144,14 +127,13 @@ public class mainClass {
 
     static String validateWindowSeatSelection() {
         System.out.println("Would you like to book a window seat: Yes || NO: ");
-        String userSelection = mainScanner.next();
-        return userSelection;
+        return mainScanner.next();
     }
 
     static void bookSeat() {
         String userInfo = getUserInfo();
         int[] seatInfo = customerSeatChoice(); // Get the seat info of the booked seat
-        if (seatInfo[1] == -1 || seatInfo[0] != -1 && userInfo != null) { // Check if a valid seat was booked and user info is available
+        if (seatInfo[1] == -1 || seatInfo[0] != -1) { // Check if a valid seat was booked and user info is available
             String[] userInfoParts = userInfo.split(",");
             String seatNumber = String.valueOf(seatInfo[1]);
             String rowNumber = String.valueOf(seatInfo[0]);
@@ -234,7 +216,7 @@ public class mainClass {
                 return seatInfo;
             }
 
-            if (row >= 0 && row < busSeats.length && seat >= 0 && seat < busSeats[row].length) {
+            if (row < busSeats.length && seat < busSeats[row].length) {
                 if (!checkSeatBooked(row, seat)) {
                     System.out.println("Seat is already booked. Please select an unreserved seat.");
                     return customerSeatChoice(); // Return the result of the recursive call
@@ -337,7 +319,7 @@ public class mainClass {
         System.out.print("> ");
     }
 
-    static int getInspectorChoice() {
+    static void getInspectorChoice() {
         printInspectorChoices();
         int inspectorChoice = mainScanner.nextInt();
         switch (inspectorChoice) {
@@ -358,10 +340,9 @@ public class mainClass {
             default:
                 startBusService();
         }
-        return inspectorChoice;
     }
 
-    static String getCurrentCustomers() {
+    static void getCurrentCustomers() {
         int currentCount = 0;
         for (String[] customer : customers) {
             if (customer[0] != null) { // Check if there is customer data
@@ -374,7 +355,6 @@ public class mainClass {
             }
         }
 
-        return "";
     }
 
 }
