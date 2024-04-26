@@ -125,14 +125,9 @@ public class mainClass {
         }
     }
 
-    static String validateWindowSeatSelection() {
-        System.out.println("Would you like to book a window seat: Yes || NO: ");
-        return mainScanner.next();
-    }
-
     static void bookSeat() {
         String userInfo = getUserInfo();
-        int[] seatInfo = customerSeatChoice(); // Get the seat info of the booked seat
+        int seatInfo = getCustomerSeatChoice(); // Get the seat info of the booked seat
         if (seatInfo[1] == -1 || seatInfo[0] != -1) { // Check if a valid seat was booked and user info is available
             String[] userInfoParts = userInfo.split(",");
             String seatNumber = String.valueOf(seatInfo[1]);
@@ -201,52 +196,28 @@ public class mainClass {
         }
     }
 
-    static int[] customerSeatChoice() {
-        int[] seatInfo = {-1, -1}; // Default value in case of exceptions or invalid input
+    static int getUserWindowSelection() {
+        int selection = 0; // Default value
+        boolean validInput = false;
 
-        try {
-            System.out.println("Which row would you like to book a seat in (0-3): ");
-            int row = Integer.parseInt(mainScanner.next());
-            System.out.println("Which seat would you like to book from this row (0-3): ");
-            informAboutWindowSeats();
-            int seat = Integer.parseInt(mainScanner.next());
+        while (!validInput) {
+            // Prompt the user to select a window seat
+            System.out.println("Would you like to book a window seat? (yes/no)");
+            String answer = mainScanner.next();
 
-            if (row < 0 || row > 3 || seat < 0 || seat > 3) {
-                System.out.println("Please Enter the numbers: 0-3");
-                return seatInfo;
-            }
-
-            if (row < busSeats.length && seat < busSeats[row].length) {
-                if (!checkSeatBooked(row, seat)) {
-                    System.out.println("Seat is already booked. Please select an unreserved seat.");
-                    return customerSeatChoice(); // Return the result of the recursive call
-                } else {
-                    System.out.println("Seat was Successfully Booked");
-                    busSeats[row][seat] = "X"; // Mark seat as booked
-                    seatInfo[0] = row;
-                    seatInfo[1] = seat;
-                }
+            // Validate user input and set the selection accordingly
+            if (answer.equalsIgnoreCase("yes")) {
+                selection = 1; // Yes
+                validInput = true;
+            } else if (answer.equalsIgnoreCase("no")) {
+                selection = 2; // No
+                validInput = true;
             } else {
-                System.out.println("Invalid seat selection. Please select a valid seat.");
+                System.out.println("Please enter a correct answer: 'yes' or 'no'");
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Please enter a valid integer.");
-            customerSeatChoice(); // Recursive call for the user to re-enter seats info
-        } catch (Exception e) {
-            System.out.println("Invalid input. Please select an unreserved seat.");
-            mainScanner.nextLine(); // Consume invalid input
         }
-        return seatInfo;
-    }
 
-    static void informAboutWindowSeats() {
-        // Inform about window seats (Seats Numbers 0 and 3 are windows)
-        System.out.println("Seats Numbers 0 and 3 are windows");
-
-    }
-
-    static boolean checkSeatBooked(int row, int seat) {
-        return !busSeats[row][seat].equals("X");
+        return selection;
     }
 
     static int getCustomerAge(String birthDate) {
