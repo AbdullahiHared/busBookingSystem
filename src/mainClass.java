@@ -150,7 +150,7 @@ public class mainClass {
         double ticketPrice;
         // Calculate profit based on customer age
         if (isAdult) {
-            profit += 299;
+            profit += 299.90;
             ticketPrice = 299.90;
         } else {
             profit += (int) 149.90;
@@ -231,7 +231,7 @@ public class mainClass {
             System.out.print("Which seat would you like to book? ");
             int seatNumber = mainScanner.nextInt();
             if (!checkSeatBooked(seatNumber)) {
-                seatChoice += seatNumber;
+                seatChoice = seatNumber;
             } else {
                 System.out.println("Seat is already booked: Please try again");
                 customerSeatChoice();
@@ -356,7 +356,7 @@ public class mainClass {
 
         boolean found = false;
         for (String[] customer : customers) {
-            if (customer != null) {
+            if (customer != null && customer.length == 3) {
                 if (customer[0].equals(seatNumber) && customer[1].equals(String.valueOf(birthDate))) {
                     System.out.println("Your Booking Information");
                     System.out.println("Full name : " + customer[2]);
@@ -455,6 +455,24 @@ public class mainClass {
                 System.out.println();
             }
         }
+    }
+
+    static String[] sortCustomers(String[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = 0; j < arr.length - i - 1; j++) {
+                if (arr[j] != null && arr[j + 1] != null) {
+                    int age1 = getCustomerAge(Integer.parseInt(arr[j].split(",")[1]));
+                    int age2 = getCustomerAge(Integer.parseInt(arr[j + 1].split(",")[1]));
+                    if (age1 > age2) {
+                        // Swap arr[j] and arr[j+1]
+                        String temp = arr[j];
+                        arr[j] = arr[j + 1];
+                        arr[j + 1] = temp;
+                    }
+                }
+            }
+        }
+        return arr;
     }
 }
 
