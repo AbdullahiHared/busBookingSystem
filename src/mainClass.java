@@ -57,13 +57,13 @@ public class mainClass {
     }
 
     public static void printBusBack() {
-        System.out.println("\n|------------|");
-        System.out.println("\\-/_\\----/_\\-/\n");
+        System.out.println("\n|----------------|");
+        System.out.println("\\-/_\\--------/_\\-/\n");
     }
 
     static void printWheels(int row) {
         if (row == 1 || row == 3) {
-            System.out.print("\n()----------()");
+            System.out.print("\n()--------------()");
         }
     }
 
@@ -94,6 +94,7 @@ public class mainClass {
                 break;
             case 2:
                 printBusSeats();
+                startCustomerService();
                 break;
             case 3:
                 System.out.println("Find Booked Seat.");
@@ -210,9 +211,11 @@ public class mainClass {
         int windowSelectionAnswer = getUserWindowSelection();
         switch (windowSelectionAnswer) {
             case 1:
-                getUserWindowSelection();
+                getUnbookedWindowSeats();
+                customerSeatChoice();
                 break;
             case 2:
+                getUnbookedSeats();
                 customerSeatChoice();
                 break;
             default:
@@ -222,7 +225,6 @@ public class mainClass {
     }
 
     static int customerSeatChoice() {
-        getUnbookedSeats();
         int seatChoice = 0;
         try {
             System.out.print("Which seat would you like to book? ");
@@ -256,7 +258,7 @@ public class mainClass {
         StringBuilder availableSeats = new StringBuilder();
         for (String[] busSeat : busSeats) {
             for (int j = 0; j < busSeat.length; j++) {
-                if (!busSeats[j].equals("X")) {
+                if (!busSeat[j].equals("X")) {
                     availableSeats.append(" ").append(busSeat[j]);
                 }
             }
@@ -264,6 +266,22 @@ public class mainClass {
 
         System.out.println("Available Seats: ");
         System.out.println(availableSeats);
+    }
+
+    static void getUnbookedWindowSeats() {
+        StringBuilder availableWindowSeats = new StringBuilder();
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (!busSeats[i][j].equals("X")) {
+                    if (j % 4 == 1 || j % 4 == 0) {
+                        availableWindowSeats.append(" ").append(busSeats[i][j]);
+                    }
+                }
+            }
+        }
+
+        System.out.println("Available Windows Seats: ");
+        System.out.println(availableWindowSeats);
     }
 
     static int getUserWindowSelection() {
@@ -300,7 +318,6 @@ public class mainClass {
 
         return age >= 18;
     }
-
 
     static void addCustomerData(String seatNumber, String birthDate, String fullName) {
         boolean dataAdded = false;
@@ -384,6 +401,7 @@ public class mainClass {
                 break;
             case 4:
                 printBusSeats();
+                busInspector();
                 break;
             default:
                 startBusService();
