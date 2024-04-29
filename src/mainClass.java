@@ -320,6 +320,14 @@ public class mainClass {
         return age >= 18;
     }
 
+    static int checkCustomerAge(int birthDate) {
+        int birthYear = birthDate / 10000; // Extract the birth year from the full date
+
+        LocalDate currentDate = LocalDate.now();
+        int currentYear = currentDate.getYear();
+        return currentYear - birthYear;
+    }
+
     static void addCustomerData(String seatNumber, String birthDate, String fullName) {
         boolean dataAdded = false;
         try {
@@ -422,7 +430,6 @@ public class mainClass {
                 busInspector();
                 break;
             case 2:
-                System.out.println("Sorted customers will be here: ");
                 busInspector();
                 break;
             case 3:
