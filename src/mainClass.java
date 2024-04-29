@@ -153,7 +153,7 @@ public class mainClass {
             profit += 299;
             ticketPrice = 299.90;
         } else {
-            profit -= (int) 149.90;
+            profit += (int) 149.90;
             ticketPrice = 149.90;
         }
 
@@ -320,7 +320,7 @@ public class mainClass {
         return age >= 18;
     }
 
-    static int checkCustomerAge(int birthDate) {
+    static int getCustomerAge(int birthDate) {
         int birthYear = birthDate / 10000; // Extract the birth year from the full date
 
         LocalDate currentDate = LocalDate.now();
@@ -373,7 +373,6 @@ public class mainClass {
             findCustomerData();
         }
     }
-
 
     static void unBookSeat() {
         int birthDate = promptPassengerForBirthDate();
@@ -456,7 +455,6 @@ public class mainClass {
                 System.out.println();
             }
         }
-
     }
 }
 
