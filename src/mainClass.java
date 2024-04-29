@@ -10,7 +10,7 @@ public class mainClass {
             {"9", "10", "11", "12"},
             {"13", "14", "15", "16"},
             {"17", "18", "19", "20"}};
-    static String[][] customers = new String[20][4]; //array to store customers data.
+    static String[][] customers = new String[20][3]; //array to store customers data.
 
     public static void main(String[] args) {
         startBusService();
@@ -97,7 +97,8 @@ public class mainClass {
                 startCustomerService();
                 break;
             case 3:
-                System.out.println("Find Booked Seat.");
+                findCustomerData();
+                startCustomerService();
                 break;
             case 4:
                 unBookSeat();
@@ -257,9 +258,9 @@ public class mainClass {
     static void getUnbookedSeats() {
         StringBuilder availableSeats = new StringBuilder();
         for (String[] busSeat : busSeats) {
-            for (int j = 0; j < busSeat.length; j++) {
-                if (!busSeat[j].equals("X")) {
-                    availableSeats.append(" ").append(busSeat[j]);
+            for (String s : busSeat) {
+                if (!s.equals("X")) {
+                    availableSeats.append(" ").append(s);
                 }
             }
         }
@@ -324,7 +325,7 @@ public class mainClass {
         try {
             for (int i = 0; i < customers.length && !dataAdded; i++) {
 
-                if (customers[i][0] == null || customers[i][0].isEmpty()) { // Checking if the seatNumber field is empty
+                if (customers[i][0] == null || customers[i][0].isEmpty()) { // Checking if the field is empty
                     customers[i][0] = seatNumber;
                     customers[i][2] = birthDate;
                     customers[i][3] = fullName;
@@ -337,6 +338,34 @@ public class mainClass {
             System.out.println("Your ticket information was successfully saved.");
         }
     }
+
+    static void findCustomerData() {
+        System.out.print("Please Enter Your birth date: ");
+        int birthDate = promptPassengerForBirthDate();
+
+        System.out.print("Please Enter Which Seat You Had: ");
+        String seatNumber = mainScanner.next();
+
+        boolean found = false;
+        for (String[] customer : customers) {
+            if (customer != null) {
+                if (customer[0].equals(seatNumber) && customer[1].equals(String.valueOf(birthDate))) {
+                    System.out.println("Your Booking Information");
+                    System.out.println("Full name : " + customer[2]);
+                    System.out.println("BirthDate : " + birthDate);
+                    System.out.println("Seat Number : " + seatNumber);
+                    found = true;
+                    break;
+                }
+            }
+        }
+
+        if (!found) {
+            System.out.println("Please provide correct information. ");
+            findCustomerData();
+        }
+    }
+
 
     static void unBookSeat() {
         int birthDate = promptPassengerForBirthDate();
