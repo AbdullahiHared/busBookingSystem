@@ -130,7 +130,7 @@ public class mainClass {
 
     static boolean checkSeatBooked(int seat) {
         for (String[] busSeat : busSeats) {
-            if (busSeat[seat].equals("X")) {
+            if (seat < busSeat.length && busSeat[seat].equals("X")) {
                 return true;
             }
         }
@@ -140,13 +140,17 @@ public class mainClass {
     static void bookSeat() {
         String[] userInfo = getUserInfo();
         int seatChoice = getCustomerSeatChoice(); // Get the seat choice from the customer
+        System.out.println("Your seat number is " + seatChoice);
+
         reserveSeat(seatChoice); // Reserve the chosen seat
 
         // Extract user information
         String fullName = userInfo[0];
         String birthDate = userInfo[1];
+
         boolean isAdult = isCustomerAdult(Integer.parseInt(birthDate));
         double ticketPrice;
+
         // Calculate profit based on customer age
         if (isAdult) {
             profit += (int) 299.90;
@@ -158,6 +162,7 @@ public class mainClass {
 
         //Save passenger data
         addCustomerData(String.valueOf(seatChoice), birthDate, fullName);
+
         // Display booking information
         displayBookingInfo(fullName, birthDate, seatChoice, ticketPrice);
         startCustomerService();
@@ -176,8 +181,7 @@ public class mainClass {
     static String[] getUserInfo() {
         String fullName = userName();
         int birthDate = promptPassengerForBirthDate();
-        String[] userInfo = {fullName, Integer.toString(birthDate)};
-        return userInfo;
+        return new String[]{fullName, Integer.toString(birthDate)};
     }
 
     static String userName() {
@@ -230,37 +234,41 @@ public class mainClass {
     }
 
     static int customerSeatChoice() {
-        System.out.println("");
+        System.out.println();
+        int seatChoice;
+
         System.out.print("Which seat would you like to book? ");
         int seatNumber = mainScanner.nextInt();
+
         if (!checkSeatBooked(seatNumber)) {
-            return seatNumber;
+            seatChoice = seatNumber;
         } else {
             System.out.println("Seat is already booked: Please try again");
-            customerSeatChoice();
+            return customerSeatChoice(); // recursively call the method again for correct input
         }
 
-        return seatNumber;
+        return seatChoice;
     }
 
+
     static void reserveSeat(int seat) {
-        String seatString = String.valueOf(seat);
+        String seatChoice = Integer.toString(seat);
         for (int i = 0; i < busSeats.length; i++) {
             for (int j = 0; j < busSeats[i].length; j++) {
-                if (busSeats[i][j].equals(seatString)) {
+                if (busSeats[i][j].equals(seatChoice)) {
                     busSeats[i][j] = "X";
-                    return; // Exit the method once the seat is reserved
                 }
             }
         }
     }
 
+
     static void getUnbookedSeats() {
         StringBuilder availableSeats = new StringBuilder();
         for (String[] busSeat : busSeats) {
-            for (String s : busSeat) {
-                if (!s.equals("X")) {
-                    availableSeats.append(" ").append(s);
+            for (String seat : busSeat) {
+                if (!seat.equals("X")) {
+                    availableSeats.append(" ").append(seat);
                 }
             }
         }
@@ -379,20 +387,25 @@ public class mainClass {
         System.out.print("Please Enter Which seat number you had: ");
         int passengerSeat = mainScanner.nextInt();
         for (String[] customer : customers) {
-            if (customer[0] != null && customer[0].equals(String.valueOf(passengerSeat)) && customer[2].equals(String.valueOf(birthDate))) {
+            if (customer[0] != null && customer[0].equals(String.valueOf(passengerSeat)) && customer[1].equals(String.valueOf(birthDate))) {
                 int seatNumber = Integer.parseInt(customer[0]);
                 updateSeatReservation(seatNumber);
                 System.out.println("Ticket Cancelling Was Successful.");
                 boolean isAdult = isCustomerAdult(birthDate); // Corrected this line
                 double ticketPrice;
+
                 // Calculate profit based on customer age
                 if (isAdult) {
-                    profit += 299;
+                    profit -= 299;
                     ticketPrice = 299.90;
                 } else {
                     profit -= 149;
                     ticketPrice = 149.90;
                 }
+
+                // remove customer from customers
+                removeCustomerData(seatNumber, birthDate);
+
                 // Output the ticket price
                 System.out.println("Refund Amount: kr" + ticketPrice);
                 startCustomerService();
@@ -402,10 +415,21 @@ public class mainClass {
 
     static void updateSeatReservation(int seat) {
         for (String[] seatPosition : busSeats) {
-            seatPosition[seat] = String.valueOf(seat);
+            seatPosition[seat - 1] = String.valueOf(seat); // Corrected this line
         }
-
     }
+
+    // remove customer data
+    static void removeCustomerData(int seatNumber, int birthDate) {
+        for (String[] customer : customers) {
+            if (customer[0] != null && customer[0].equals(String.valueOf(seatNumber)) && customer[1].equals(String.valueOf(birthDate))) {
+                customer[0] = null;
+                customer[1] = null;
+                customer[2] = null;
+            }
+        }
+    }
+
 
     static void busInspector() {
         getInspectorChoice();
@@ -454,6 +478,8 @@ public class mainClass {
                 System.out.println("Seat Number: " + customer[0]);
                 System.out.println("Birthdate: " + customer[1]);
                 System.out.println();
+            } else {
+                System.out.println("No customers found.");
             }
         }
     }
