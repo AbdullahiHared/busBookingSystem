@@ -159,13 +159,17 @@ public class mainClass {
         //Save passenger data
         addCustomerData(String.valueOf(seatChoice), birthDate, fullName);
         // Display booking information
+        displayBookingInfo(fullName, birthDate, seatChoice, ticketPrice);
+        startCustomerService();
+    }
+
+    static void displayBookingInfo(String fullName, String birthDate, int seatNumber, double price) {
         System.out.println("Booking Info: ");
         System.out.println("Full Name: " + fullName);
         System.out.println("BirthDate : " + birthDate);
-        System.out.println("Seat Number : " + seatChoice);
-        System.out.println("Price : " + ticketPrice + " kr");
+        System.out.println("Seat Number : " + seatNumber);
+        System.out.println("Price : " + price + " kr");
         System.out.println("Welcome on board <>");
-        startCustomerService();
     }
 
 
@@ -329,10 +333,10 @@ public class mainClass {
         try {
             for (int i = 0; i < customers.length && !dataAdded; i++) {
 
-                if (customers[i][0] == null || customers[i][0].isEmpty()) { // Checking if the field is empty
+                if (customers[i][0] == null || customers[i][1].isEmpty()) { // Checking if the field is empty
                     customers[i][0] = seatNumber;
-                    customers[i][2] = birthDate;
-                    customers[i][3] = fullName;
+                    customers[i][1] = birthDate;
+                    customers[i][2] = fullName;
                     dataAdded = true; // Set it to true once the data is added
                 }
             }
