@@ -138,19 +138,18 @@ public class mainClass {
     }
 
     static void bookSeat() {
-        String userInfo = getUserInfo();
+        String[] userInfo = getUserInfo();
         int seatChoice = getCustomerSeatChoice(); // Get the seat choice from the customer
         reserveSeat(seatChoice); // Reserve the chosen seat
 
         // Extract user information
-        String[] userInfoParts = userInfo.split(",");
-        String fullName = userInfoParts[0];
-        String birthDate = userInfoParts[1];
+        String fullName = userInfo[0];
+        String birthDate = userInfo[1];
         boolean isAdult = isCustomerAdult(Integer.parseInt(birthDate));
         double ticketPrice;
         // Calculate profit based on customer age
         if (isAdult) {
-            profit += 299.90;
+            profit += (int) 299.90;
             ticketPrice = 299.90;
         } else {
             profit += (int) 149.90;
@@ -170,10 +169,11 @@ public class mainClass {
     }
 
 
-    static String getUserInfo() {
+    static String[] getUserInfo() {
         String fullName = userName();
         int birthDate = promptPassengerForBirthDate();
-        return fullName + "," + birthDate;
+        String[] userInfo = {fullName, Integer.toString(birthDate)};
+        return userInfo;
     }
 
     static String userName() {
@@ -226,21 +226,17 @@ public class mainClass {
     }
 
     static int customerSeatChoice() {
-        int seatChoice = 0;
-        try {
-            System.out.print("Which seat would you like to book? ");
-            int seatNumber = mainScanner.nextInt();
-            if (!checkSeatBooked(seatNumber)) {
-                seatChoice = seatNumber;
-            } else {
-                System.out.println("Seat is already booked: Please try again");
-                customerSeatChoice();
-            }
-        } catch (Exception e) {
-            System.out.println("Oops! Something Went Wrong.");
+        System.out.println("");
+        System.out.print("Which seat would you like to book? ");
+        int seatNumber = mainScanner.nextInt();
+        if (!checkSeatBooked(seatNumber)) {
+            return seatNumber;
+        } else {
+            System.out.println("Seat is already booked: Please try again");
+            customerSeatChoice();
         }
 
-        return seatChoice;
+        return seatNumber;
     }
 
     static void reserveSeat(int seat) {
@@ -433,6 +429,7 @@ public class mainClass {
                 break;
             case 3:
                 getCurrentCustomers();
+                busInspector();
                 break;
             case 4:
                 printBusSeats();
@@ -446,33 +443,15 @@ public class mainClass {
     static void getCurrentCustomers() {
         int currentCount = 0;
         for (String[] customer : customers) {
-            if (customer[0] != null) { // Check if there is customer data
+            if (customer[0] != null && customer[2] != null) {
                 currentCount++;
                 System.out.println("Customer: " + currentCount + ": ");
-                System.out.println("FullName: " + customer[3]);
+                System.out.println("FullName: " + customer[2]);
                 System.out.println("Seat Number: " + customer[0]);
-                System.out.println("Birthdate: " + customer[2]);
+                System.out.println("Birthdate: " + customer[1]);
                 System.out.println();
             }
         }
-    }
-
-    static String[] sortCustomers(String[] arr) {
-        for (int i = 0; i < arr.length - 1; i++) {
-            for (int j = 0; j < arr.length - i - 1; j++) {
-                if (arr[j] != null && arr[j + 1] != null) {
-                    int age1 = getCustomerAge(Integer.parseInt(arr[j].split(",")[1]));
-                    int age2 = getCustomerAge(Integer.parseInt(arr[j + 1].split(",")[1]));
-                    if (age1 > age2) {
-                        // Swap arr[j] and arr[j+1]
-                        String temp = arr[j];
-                        arr[j] = arr[j + 1];
-                        arr[j + 1] = temp;
-                    }
-                }
-            }
-        }
-        return arr;
     }
 }
 
