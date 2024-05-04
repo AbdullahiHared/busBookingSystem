@@ -139,10 +139,11 @@ public class mainClass {
 
     static void bookSeat() {
         String[] userInfo = getUserInfo();
-        int seatChoice = getCustomerSeatChoice(); // Get the seat choice from the customer
-        System.out.println("Your seat number is " + seatChoice);
+        // get the seat number from the user
+        int seatChoice = getCustomerSeatChoice();
 
-        reserveSeat(seatChoice); // Reserve the chosen seat
+        //reserve the seat
+        reserveSeat(seatChoice);
 
         // Extract user information
         String fullName = userInfo[0];
@@ -218,19 +219,20 @@ public class mainClass {
 
     static int getCustomerSeatChoice() {
         int windowSelectionAnswer = getUserWindowSelection();
+        int seatChoice = 0;
         switch (windowSelectionAnswer) {
             case 1:
                 getUnbookedWindowSeats();
-                customerSeatChoice();
+                seatChoice = customerSeatChoice();
                 break;
             case 2:
                 getUnbookedSeats();
-                customerSeatChoice();
+                seatChoice = customerSeatChoice();
                 break;
             default:
                 System.out.println("Error Try Again");
         }
-        return windowSelectionAnswer;
+        return seatChoice;
     }
 
     static int customerSeatChoice() {
@@ -244,7 +246,8 @@ public class mainClass {
             seatChoice = seatNumber;
         } else {
             System.out.println("Seat is already booked: Please try again");
-            return customerSeatChoice(); // recursively call the method again for correct input
+            // Recursive call to re-prompt the user
+            seatChoice = customerSeatChoice();
         }
 
         return seatChoice;
@@ -479,7 +482,8 @@ public class mainClass {
                 System.out.println("Birthdate: " + customer[1]);
                 System.out.println();
             } else {
-                System.out.println("No customers found.");
+                System.out.println("No customers on board");
+                break;
             }
         }
     }
