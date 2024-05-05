@@ -421,10 +421,10 @@ public class mainClass {
      */
     static void getUnbookedWindowSeats() {
         StringBuilder availableWindowSeats = new StringBuilder();
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
+        for (int i = 0; i < busSeats.length; i++) {
+            for (int j = 0; j < busSeats[i].length; j++) {
                 if (!busSeats[i][j].equals("X")) {
-                    if (j % 4 == 1 || j % 4 == 0) {
+                    if (j == 0 || j == busSeats[i].length - 1) { // Check if it's the first or last seat in the row
                         availableWindowSeats.append(" ").append(busSeats[i][j]);
                     }
                 }
@@ -689,7 +689,6 @@ public class mainClass {
                 }
             }
         }
-
 
         // Print all customers after sorting
         for (String[] customer : customers) {
