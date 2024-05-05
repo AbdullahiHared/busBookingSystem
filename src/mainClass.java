@@ -158,13 +158,8 @@ public class mainClass {
      * @return the customer's choice
      */
     static int getCustomerChoice() {
+        printCustomerChoices();
         int customerChoice;
-        System.out.println("0.Exit");
-        System.out.println("1.Book seat");
-        System.out.println("2.Show bus");
-        System.out.println("3.Find your booking");
-        System.out.println("4.Cancel booking");
-        System.out.print("> ");
         customerChoice = mainScanner.nextInt();
 
         if (customerChoice >= 0 && customerChoice <= 4) {
@@ -174,6 +169,15 @@ public class mainClass {
             // Recursive call for the user to try again.
             return getCustomerChoice();
         }
+    }
+
+    static void printCustomerChoices() {
+        System.out.println("0. Exit");
+        System.out.println("1. Book seat");
+        System.out.println("2. Show bus");
+        System.out.println("3. Find your booking");
+        System.out.println("4. Cancel booking");
+        System.out.print("> ");
     }
 
     /**
