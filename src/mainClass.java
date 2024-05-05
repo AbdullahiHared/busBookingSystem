@@ -50,11 +50,16 @@ public class mainClass {
         int choice;
         while (true) {
             printRolesChoices();
-            choice = mainScanner.nextInt();
-            if (choice == 1 || choice == 2 || choice == 3) {
-                return choice;
-            } else {
-                System.out.println("Please enter a valid option from (1, 2, or 3).");
+            try {
+                choice = mainScanner.nextInt();
+                if (choice == 1 || choice == 2 || choice == 3) {
+                    return choice;
+                } else {
+                    System.out.println("Please enter a valid option from (1, 2, or 3).");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                mainScanner.next(); // Consume the invalid token
             }
         }
     }
