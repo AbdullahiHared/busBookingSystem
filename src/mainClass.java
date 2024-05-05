@@ -240,7 +240,7 @@ public class mainClass {
     }
 
     static int customerSeatChoice() {
-        int seatChoice = 0;
+        int seatChoice;
         while (true) {
             System.out.println();
             System.out.print("Which seat would you like to book? ");
@@ -361,8 +361,7 @@ public class mainClass {
         boolean dataAdded = false;
         try {
             for (int i = 0; i < customers.length && !dataAdded; i++) {
-
-                if (customers[i][0] == null || customers[i][1].isEmpty()) { // Checking if the field is empty
+                if (customers[i][0] == null) { // Checking if the field is empty
                     customers[i][0] = seatNumber;
                     customers[i][1] = birthDate;
                     customers[i][2] = fullName;
@@ -376,30 +375,21 @@ public class mainClass {
         }
     }
 
+
     static void findCustomerData() {
-        System.out.print("Please Enter Your birth date: ");
         int birthDate = promptPassengerForBirthDate();
-
-        System.out.print("Please Enter Which Seat You Had: ");
-        String seatNumber = mainScanner.next();
-
-        boolean found = false;
+        System.out.println("Please enter the seat you had booked: ");
+        int chosenSeat = mainScanner.nextInt();
         for (String[] customer : customers) {
-            if (customer != null && customer.length == 3) {
-                if (customer[0].equals(seatNumber) && customer[1].equals(String.valueOf(birthDate))) {
-                    System.out.println("Your Booking Information");
-                    System.out.println("Full name : " + customer[2]);
-                    System.out.println("BirthDate : " + birthDate);
-                    System.out.println("Seat Number : " + seatNumber);
-                    found = true;
-                    break;
-                }
+            if (customer[1] != null && customer[1].equals(String.valueOf(birthDate)) && customer[0].equals(String.valueOf(chosenSeat))) {
+                System.out.println("Customer: ");
+                System.out.println("Seat Number: " + customer[0]);
+                System.out.println("Birthdate: " + customer[1]);
+                System.out.println("Full Name: " + customer[2]);
+                break;
+            } else {
+                System.out.println("No customer found with that birth date.");
             }
-        }
-
-        if (!found) {
-            System.out.println("Please provide correct information. ");
-            findCustomerData();
         }
     }
 
@@ -474,6 +464,7 @@ public class mainClass {
                 busInspector();
                 break;
             case 2:
+                sortCustomersByAge();
                 busInspector();
                 break;
             case 3:
@@ -499,9 +490,39 @@ public class mainClass {
                 System.out.println("Seat Number: " + customer[0]);
                 System.out.println("Birthdate: " + customer[1]);
                 System.out.println();
-                break;
-            } else {
-                System.out.println("No customers on board");
+            }
+        }
+        if (currentCount == 0) {
+            System.out.println("No customers on board");
+        }
+    }
+
+
+    //sort customers by age
+    static void sortCustomersByAge() {
+        System.out.println("Customers Sorted By Age: ");
+        for (int i = 0; i < customers.length; i++) {
+            for (int j = i + 1; j < customers.length; j++) {
+                if (customers[i][1] != null && customers[j][1] != null) {
+                    int age1 = getCustomerAge(Integer.parseInt(customers[i][1]));
+                    int age2 = getCustomerAge(Integer.parseInt(customers[j][1]));
+
+                    if (age1 < age2) {
+                        String[] temp = customers[i];
+                        customers[i] = customers[j];
+                        customers[j] = temp;
+                    }
+                }
+            }
+        }
+
+        // Print all customers after sorting
+        for (String[] customer : customers) {
+            if (customer[0] != null && customer[2] != null) {
+                System.out.println("Full Name: " + customer[2]);
+                System.out.println("Birth Date: " + customer[1]);
+                System.out.println("Seat Number: " + customer[0]);
+                System.out.println();
             }
         }
     }
