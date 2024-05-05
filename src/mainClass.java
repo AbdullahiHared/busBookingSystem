@@ -160,14 +160,18 @@ public class mainClass {
     static int getCustomerChoice() {
         printCustomerChoices();
         int customerChoice;
-        customerChoice = mainScanner.nextInt();
-
-        if (customerChoice >= 0 && customerChoice <= 4) {
-            return customerChoice;
-        } else {
-            System.out.println("Please enter a valid option from (0, 1, 2, or 3).");
-            // Recursive call for the user to try again.
-            return getCustomerChoice();
+        while (true) {
+            try {
+                customerChoice = mainScanner.nextInt();
+                if (customerChoice >= 0 && customerChoice <= 4) {
+                    return customerChoice;
+                } else {
+                    System.out.println("Please enter a valid option from (0, 1, 2, or 3).");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                mainScanner.next(); // Consume the invalid token
+            }
         }
     }
 
