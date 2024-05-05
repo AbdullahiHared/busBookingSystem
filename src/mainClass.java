@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class mainClass {
     static Scanner mainScanner = new Scanner(System.in); // Declaring Scanner globally
@@ -129,13 +130,16 @@ public class mainClass {
     }
 
     static boolean checkSeatBooked(int seat) {
-        for (String[] busSeat : busSeats) {
-            if (seat < busSeat.length && busSeat[seat].equals("X")) {
-                return true;
+        for (String[] busRow : busSeats) {
+            for (String s : busRow) {
+                if (s.equals(String.valueOf(seat))) {
+                    return false;
+                }
             }
         }
-        return false;
+        return true;
     }
+
 
     static void bookSeat() {
         String[] userInfo = getUserInfo();
@@ -236,32 +240,46 @@ public class mainClass {
     }
 
     static int customerSeatChoice() {
-        System.out.println();
-        int seatChoice;
-
-        System.out.print("Which seat would you like to book? ");
-        int seatNumber = mainScanner.nextInt();
-
-        if (!checkSeatBooked(seatNumber)) {
-            seatChoice = seatNumber;
-        } else {
-            System.out.println("Seat is already booked: Please try again");
-            // Recursive call to re-prompt the user
-            seatChoice = customerSeatChoice();
+        int seatChoice = 0;
+        while (true) {
+            System.out.println();
+            System.out.print("Which seat would you like to book? ");
+            try {
+                int seatNumber = mainScanner.nextInt();
+                if (!checkSeatBooked(seatNumber)) {
+                    seatChoice = seatNumber;
+                    break;
+                } else {
+                    System.out.println("Seat is already booked. Please try again.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid seat number.");
+                mainScanner.next(); // Consume invalid input to avoid infinite loop
+            }
         }
-
         return seatChoice;
     }
 
 
     static void reserveSeat(int seat) {
         String seatChoice = Integer.toString(seat);
+        boolean seatReserved = false; // Flag to track if seat is reserved
+
         for (int i = 0; i < busSeats.length; i++) {
             for (int j = 0; j < busSeats[i].length; j++) {
                 if (busSeats[i][j].equals(seatChoice)) {
                     busSeats[i][j] = "X";
+                    seatReserved = true; // Set flag to true when seat is reserved
+                    break; // Exit inner loop since seat is reserved
                 }
             }
+            if (seatReserved) {
+                break; // Exit outer loop since seat is reserved
+            }
+        }
+
+        if (!seatReserved) {
+            System.out.println("Seat could not be reserved");
         }
     }
 
@@ -481,9 +499,9 @@ public class mainClass {
                 System.out.println("Seat Number: " + customer[0]);
                 System.out.println("Birthdate: " + customer[1]);
                 System.out.println();
+                break;
             } else {
                 System.out.println("No customers on board");
-                break;
             }
         }
     }
