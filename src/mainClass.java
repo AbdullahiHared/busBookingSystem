@@ -547,6 +547,7 @@ public class mainClass {
         int birthDate = promptPassengerForBirthDate();
         System.out.print("Please Enter Which seat number you had: ");
         int passengerSeat = mainScanner.nextInt();
+
         for (String[] customer : customers) {
             if (customer[0] != null && customer[0].equals(String.valueOf(passengerSeat)) && customer[1].equals(String.valueOf(birthDate))) {
                 int seatNumber = Integer.parseInt(customer[0]);
@@ -580,9 +581,10 @@ public class mainClass {
      * @param seat the seat number
      */
     static void updateSeatReservation(int seat) {
-        for (String[] seatPosition : busSeats) {
-            seatPosition[seat - 1] = String.valueOf(seat); // Corrected this line
-        }
+        int row = (seat - 1) / 4; // Calculate the row
+        int col = (seat - 1) % 4; // Calculate the column
+
+        busSeats[row][col] = String.valueOf(seat); // Update the seat reservation
     }
 
     /**
